@@ -1,0 +1,88 @@
+ImageLabel.java
+==
+http://www.apl.jhu.edu/~hall/CWP-Sources/CWP-Examples/Chapter13/Chapter13.html
+...says that the deprecation warnings can be ignored.
+
+* NEED TO PUT EXCEPTIONS IN SEPARATE CLASSES IF THEY ARE GOING TO BE THROWN
+OUTSIDE WHERE THEY ARE DEFINED.
+
+* 16 February - Tom Evans (esuuu) pointed out that I don't need to be returning
+images; have now decided to have MIXWord extends Component so they can be placed
+directly onto the MIXMachine Frame.
+
+Try implementing the whole memory panel as a ScrollPane so that it sorts itself
+out when you scroll up and down.  NOT GOOD - TOO MANY COMPONENTS.
+
+05/03/1999 - There's a long type in Java!  Silly sod.  If you get time (!),
+change all the BigIntegers to longs.  Darn it.
+Well, should really look at MIXWord.java being able to return a long itself
+so that we can replace things like the longs in MIXMachine.mCHAR()
+
+06/03/1999 - Look at MOVE command...we have to implement a move of the entire
+contents of one MIXWord to another.  Can we utilise this for the graphics
+display?  Yes, but there's a problem - will only show the values when we scroll.
+Values of words being dynamically updated will *not* show, unless we have a
+check for this.  You *can* do it - use the 'mMOVE' method to check if visible?
+
+08/03/1999 - Knuth p.130 - "Bytes 1, 2, 3 of an index register are zero" - need
+to adjust the code to allow these bytes to be set by transfers?
+	   - IOC / IN - Input-output control; need to implement, along with
+	     internal representation of peripherals.
+
+09/03/1999 - Need to decide what happens if we, say, follow command 40 and then
+the field switch is a value out of bounds - error?
+
+10/03/1999 - CAN AN ENT INSTRUCTION GENERATE AN OVERFLOW?  Only if...we are
+writing to an I register and we've already used the current value to adjust the
+address field to M.  i.e. if I1 contains 4096 and we add *our* address field of
+value 8 to it before adding this *new* M to I1 again, there will be an overflow.
+
+10/03/1999 - need an 'otherwise' clause in MIXMachine.execute()
+
+11/03/1999 - Commands that update the display...
+		MOVE - 7
+		STA - 24
+		ST1 - 25
+		ST2 - 26
+		ST3 - 27
+		ST4 - 28
+		ST5 - 29
+		ST6 - 30
+
+Need toString() for I Registers.
+
+14/03/1999 - Charles Talibard - goto line.
+
+NEED TO SAY THAT WE ARE NOT IMPLEMENTING FLOATING-POINT OPERATIONS.
+
+Current Stuff - ASSEMBLER
+-------------------------
+
+Extend TextField so that all input is converted to upper-case.  Very important
+as we don't want the user to input lower-case symbols - these are to be used
+internally by the assembler.
+
+With LABEL EQU EXPRESSION we need to set up a LIST of labels with the following
+data: label
+      line number (in case of errors)
+      expression (for parsing before being entered into the symTable)
+Now, when we finish pass1, we need to scan this list iteratively.  If we can't
+resolve one of the expressions, we move on to the next.  On each pass, the list
+should be smaller than it was before, until it is zero and all labels are in the
+symTable.  If, after two consecutive iterations, we have the same-sized list,
+there is an undefined symbol error at one of the lines.  Can list them all!
+
+NEED TO DEAL WITH FORWARD REFERENCES - WHERE?
+
+CAN WE JUST USE VECTOR AND HASHTABLE TO STORE THINGS IN OUR ASSEMBLER?
+-- Vector, no, for two reasons.  It won't equate Strings and we are doing some
+   error checking too.  If an object is returned when we add something to a
+   hashset, it's already in there!
+
+
+WRITE-UP
+--------
+
+'Assumed' values of F?  Have we mentioned them?
+
+Need to add a scan of the MIX machine from TAOCP.
