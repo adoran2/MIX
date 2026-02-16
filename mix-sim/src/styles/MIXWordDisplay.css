@@ -1,0 +1,78 @@
+.mix-word {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+}
+
+.mix-word--compact {
+  font-size: 12px;
+  gap: 4px;
+}
+
+.mix-word__label {
+  min-width: 28px;
+  text-align: right;
+  color: #555;
+  font-size: 11px;
+}
+
+.mix-word__cells {
+  display: flex;
+  border: 1px solid #333;
+  background: #fff;
+}
+
+.mix-word__sign {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 24px;
+  border-right: 1px solid #333;
+  font-weight: bold;
+  background: #f0f0f0;
+}
+
+.mix-word__byte {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border-right: 1px solid #999;
+  text-align: center;
+}
+
+.mix-word__byte:last-child {
+  border-right: none;
+}
+
+.mix-word__byte--packed {
+  border-right: 1px dashed #ccc;
+}
+
+.mix-word__value {
+  min-width: 80px;
+  text-align: right;
+  color: #666;
+  font-size: 11px;
+}
+
+.mix-word--compact .mix-word__sign {
+  width: 16px;
+  height: 20px;
+  font-size: 12px;
+}
+
+.mix-word--compact .mix-word__byte {
+  width: 22px;
+  height: 20px;
+  font-size: 11px;
+}
+
+.mix-word--compact .mix-word__value {
+  min-width: 60px;
+  font-size: 10px;
+}

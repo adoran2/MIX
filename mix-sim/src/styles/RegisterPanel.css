@@ -1,0 +1,28 @@
+.register-panel {
+  background: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.register-panel__title {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.register-panel__group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.register-panel__index {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 6px 0;
+}
