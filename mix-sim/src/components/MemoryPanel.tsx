@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { MIXWord } from '../core/MIXWord';
 import { MIXWordDisplay } from './MIXWordDisplay';
 import { MEMORY_SIZE } from '../core/types';
@@ -7,20 +7,36 @@ import '../styles/MemoryPanel.css';
 interface Props {
   memory: MIXWord[];
   pc: number;
+  scrollTo?: number;
+  onScrollChange?: (pos: number) => void;
+  scrollPos: number;
 }
 
-const VISIBLE_ROWS = 16;
+const VISIBLE_ROWS = 24;
 
-export function MemoryPanel({ memory, pc }: Props) {
-  const [scrollPos, setScrollPos] = useState(0);
+export function MemoryPanel({ memory, pc, scrollTo, onScrollChange, scrollPos }: Props) {
+  const prevScrollTo = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (scrollTo !== undefined && scrollTo !== prevScrollTo.current) {
+      prevScrollTo.current = scrollTo;
+      // Centre the target address in the visible window
+      const centred = Math.max(0, Math.min(scrollTo - Math.floor(VISIBLE_ROWS / 2), MEMORY_SIZE - 1));
+      onScrollChange?.(centred);
+    }
+  }, [scrollTo, onScrollChange]);
 
   const handleScroll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setScrollPos(parseInt(e.target.value));
+    onScrollChange?.(parseInt(e.target.value));
   };
 
   const jumpToPC = () => {
-    setScrollPos(Math.max(0, Math.min(pc, MEMORY_SIZE - VISIBLE_ROWS)));
+    const centred = Math.max(0, Math.min(pc - Math.floor(VISIBLE_ROWS / 2), MEMORY_SIZE - 1));
+    onScrollChange?.(centred);
   };
+
+  // Compute the last valid start so that the last row shows address 3999
+  const maxScroll = MEMORY_SIZE - 1;
 
   return (
     <div className="memory-panel">
@@ -50,7 +66,7 @@ export function MemoryPanel({ memory, pc }: Props) {
           type="range"
           className="memory-panel__scrollbar"
           min={0}
-          max={MEMORY_SIZE - VISIBLE_ROWS}
+          max={maxScroll}
           value={scrollPos}
           onChange={handleScroll}
         />
