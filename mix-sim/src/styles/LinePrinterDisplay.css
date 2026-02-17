@@ -1,0 +1,38 @@
+.line-printer {
+  background: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.line-printer__title {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.line-printer__paper {
+  background: #fffff5;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 8px;
+  min-height: 60px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+}
+
+.line-printer__empty {
+  color: #999;
+  font-style: italic;
+  font-size: 12px;
+}
+
+.line-printer__line {
+  white-space: pre;
+  line-height: 1.4;
+}
