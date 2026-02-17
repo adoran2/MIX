@@ -12,7 +12,7 @@ interface Props {
   scrollPos: number;
 }
 
-const VISIBLE_ROWS = 24;
+const VISIBLE_ROWS = 16;
 
 export function MemoryPanel({ memory, pc, scrollTo, onScrollChange, scrollPos }: Props) {
   const prevScrollTo = useRef<number | undefined>(undefined);
