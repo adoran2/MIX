@@ -36,3 +36,10 @@
   white-space: pre;
   line-height: 1.4;
 }
+
+@media (max-width: 768px) {
+  .line-printer__paper {
+    font-size: 11px;
+    max-height: 150px;
+  }
+}

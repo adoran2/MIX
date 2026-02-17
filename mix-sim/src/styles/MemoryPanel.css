@@ -3,6 +3,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
+  max-height: calc(100vh - 140px);
+  overflow: hidden;
 }
 
 .memory-panel__header {
@@ -72,4 +74,16 @@
   width: 18px;
   height: 100%;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .memory-panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .memory-panel__addr {
+    min-width: 36px;
+    font-size: 10px;
+  }
 }
