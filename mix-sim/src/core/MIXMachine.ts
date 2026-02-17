@@ -172,19 +172,19 @@ export class MIXMachine {
       }
 
       if (op === 'ORIG') {
-        locCounter = this.evaluateExpression(operand, symbols, errors, lineNum);
+        locCounter = this.evaluateExpression(operand, symbols, errors, lineNum, locCounter);
         continue;
       }
 
       if (op === 'EQU') {
         if (label) {
-          symbols.set(label, this.evaluateExpression(operand, symbols, errors, lineNum));
+          symbols.set(label, this.evaluateExpression(operand, symbols, errors, lineNum, locCounter));
         }
         continue;
       }
 
       if (op === 'END') {
-        startAddress = this.evaluateExpression(operand, symbols, errors, lineNum);
+        startAddress = this.evaluateExpression(operand, symbols, errors, lineNum, locCounter);
         parsed.push({ label, op, operand, loc: locCounter, lineNum });
         break;
       }
@@ -200,7 +200,7 @@ export class MIXMachine {
       if (op === 'END') continue;
 
       if (op === 'CON') {
-        const val = this.evaluateExpression(operand, symbols, errors, lineNum);
+        const val = this.evaluateExpression(operand, symbols, errors, lineNum, loc);
         this.memory[loc].fromLong(val);
         continue;
       }
@@ -244,13 +244,17 @@ export class MIXMachine {
       if (operand.length > 0) {
         let remaining = operand;
 
-        // Extract field spec (L:R) in parentheses
+        // Extract field spec: (L:R) or (N) in parentheses
         const fieldMatch = remaining.match(/\((\d+):(\d+)\)$/);
+        const singleFieldMatch = !fieldMatch ? remaining.match(/\((\d+)\)$/) : null;
         if (fieldMatch) {
           const L = parseInt(fieldMatch[1]);
           const R = parseInt(fieldMatch[2]);
           field = 8 * L + R;
-          remaining = remaining.substring(0, remaining.indexOf('('));
+          remaining = remaining.substring(0, remaining.lastIndexOf('('));
+        } else if (singleFieldMatch) {
+          field = parseInt(singleFieldMatch[1]);
+          remaining = remaining.substring(0, remaining.lastIndexOf('('));
         }
 
         // Extract index register ,N
@@ -262,7 +266,7 @@ export class MIXMachine {
 
         // Evaluate address expression
         if (remaining.length > 0) {
-          address = this.evaluateExpression(remaining, symbols, errors, lineNum);
+          address = this.evaluateExpression(remaining, symbols, errors, lineNum, loc);
           if (address < 0) {
             addrSign = Sign.MINUS;
             address = -address;
@@ -292,7 +296,8 @@ export class MIXMachine {
     expr: string,
     symbols: Map<string, number>,
     errors: string[],
-    lineNum: number
+    lineNum: number,
+    locCounter: number = 0
   ): number {
     expr = expr.trim();
     if (expr.length === 0) return 0;
@@ -300,8 +305,8 @@ export class MIXMachine {
     // Handle simple numeric literal
     if (/^[+-]?\d+$/.test(expr)) return parseInt(expr, 10);
 
-    // Handle asterisk (current location counter is complex; just use 0 placeholder)
-    if (expr === '*') return 0;
+    // Handle asterisk (current location counter)
+    if (expr === '*') return locCounter;
 
     // Handle symbol lookup
     const symVal = symbols.get(expr);
@@ -310,30 +315,30 @@ export class MIXMachine {
     // Handle simple arithmetic: A+B, A-B
     const addIdx = expr.lastIndexOf('+');
     if (addIdx > 0) {
-      const left = this.evaluateExpression(expr.substring(0, addIdx), symbols, errors, lineNum);
-      const right = this.evaluateExpression(expr.substring(addIdx + 1), symbols, errors, lineNum);
+      const left = this.evaluateExpression(expr.substring(0, addIdx), symbols, errors, lineNum, locCounter);
+      const right = this.evaluateExpression(expr.substring(addIdx + 1), symbols, errors, lineNum, locCounter);
       return left + right;
     }
     const subIdx = expr.lastIndexOf('-');
     if (subIdx > 0) {
-      const left = this.evaluateExpression(expr.substring(0, subIdx), symbols, errors, lineNum);
-      const right = this.evaluateExpression(expr.substring(subIdx + 1), symbols, errors, lineNum);
+      const left = this.evaluateExpression(expr.substring(0, subIdx), symbols, errors, lineNum, locCounter);
+      const right = this.evaluateExpression(expr.substring(subIdx + 1), symbols, errors, lineNum, locCounter);
       return left - right;
     }
 
     // Handle multiplication
     const mulIdx = expr.lastIndexOf('*');
     if (mulIdx > 0) {
-      const left = this.evaluateExpression(expr.substring(0, mulIdx), symbols, errors, lineNum);
-      const right = this.evaluateExpression(expr.substring(mulIdx + 1), symbols, errors, lineNum);
+      const left = this.evaluateExpression(expr.substring(0, mulIdx), symbols, errors, lineNum, locCounter);
+      const right = this.evaluateExpression(expr.substring(mulIdx + 1), symbols, errors, lineNum, locCounter);
       return left * right;
     }
 
     // Handle division
     const divIdx = expr.lastIndexOf('/');
     if (divIdx > 0) {
-      const left = this.evaluateExpression(expr.substring(0, divIdx), symbols, errors, lineNum);
-      const right = this.evaluateExpression(expr.substring(divIdx + 1), symbols, errors, lineNum);
+      const left = this.evaluateExpression(expr.substring(0, divIdx), symbols, errors, lineNum, locCounter);
+      const right = this.evaluateExpression(expr.substring(divIdx + 1), symbols, errors, lineNum, locCounter);
       return right !== 0 ? Math.floor(left / right) : 0;
     }
 

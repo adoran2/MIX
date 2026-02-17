@@ -8,11 +8,14 @@ import { LinePrinterDisplay } from './components/LinePrinterDisplay';
 import { ControlConsole } from './components/ControlConsole';
 import './App.css';
 
+const base = import.meta.env.BASE_URL;
+
 function App() {
   const machineRef = useRef(new MIXMachine());
   const [, forceUpdate] = useState(0);
   const [source, setSource] = useState('');
   const [assembleErrors, setAssembleErrors] = useState<string[]>([]);
+  const [showInfo, setShowInfo] = useState(false);
 
   const rerender = useCallback(() => forceUpdate(n => n + 1), []);
 
@@ -44,10 +47,14 @@ function App() {
   return (
     <div className="app">
       <header className="app__header">
-        <img src="/MIXLogo.jpg" alt="MIX Logo" className="app__logo" />
-        <div className="app__header-text">
-          <h1>MIX 1009 Simulator</h1>
-          <p>A web-based simulator of Knuth's MIX computer from TAOCP</p>
+        <img src={`${base}MIX.jpg`} alt="MIX 1009" className="app__splash" />
+        <div className="app__header-controls">
+          <img src={`${base}MIXLogo.jpg`} alt="MIX Logo" className="app__logo" />
+          <div className="app__header-text">
+            <h1>MIX 1009 Simulator</h1>
+            <p>A web-based simulator of Knuth's MIX computer from TAOCP</p>
+          </div>
+          <button className="app__info-btn" onClick={() => setShowInfo(true)}>Info</button>
         </div>
       </header>
 
@@ -96,6 +103,15 @@ function App() {
       <footer className="app__footer">
         MIX 1009 Simulator &mdash; Originally by Andrew Doran (1999) &mdash; Web port using React + TypeScript
       </footer>
+
+      {showInfo && (
+        <div className="app__modal-overlay" onClick={() => setShowInfo(false)}>
+          <div className="app__modal" onClick={(e) => e.stopPropagation()}>
+            <img src={`${base}MIXInfo.jpg`} alt="MIX 1009 Information" className="app__info-img" />
+            <button className="app__modal-close" onClick={() => setShowInfo(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

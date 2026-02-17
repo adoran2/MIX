@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { MIXWord } from '../core/MIXWord';
 import { MIXMachine } from '../core/MIXMachine';
 import { Sign, ComparisonState, BASE } from '../core/types';
+import { SAMPLE_PROGRAMS } from '../core/samplePrograms';
 
 describe('MIXWord', () => {
   let word: MIXWord;
@@ -632,6 +633,39 @@ VAL      CON  0
     machine.run();
     expect(machine.halted).toBe(true);
     expect(machine.aRegister.toLong()).toBe(1); // 20 > 10, so BIGGER branch
+  });
+
+  it('assembles single-number field notation for I/O', () => {
+    const result = machine.assemble(`         ORIG 0
+         OUT  100(18)
+         HLT
+         END  0`);
+    expect(result.errors).toHaveLength(0);
+    // OUT opcode = 37, field should be 18
+    expect(machine.memory[0].getValue(4)).toBe(37);
+    expect(machine.memory[0].getValue(3)).toBe(18);
+    const addr = machine.memory[0].getValue(0) * BASE + machine.memory[0].getValue(1);
+    expect(addr).toBe(100);
+  });
+
+  it('resolves * as current location counter', () => {
+    const result = machine.assemble(`         ORIG 10
+         ENTA 0
+         JMP  *-1
+         HLT
+         END  10`);
+    expect(result.errors).toHaveLength(0);
+    // JMP at location 11 should jump to 11-1 = 10
+    const addr = machine.memory[11].getValue(0) * BASE + machine.memory[11].getValue(1);
+    expect(addr).toBe(10);
+  });
+
+  it('assembles Primes sample program without errors', () => {
+    const primes = SAMPLE_PROGRAMS.find(p => p.name === 'Primes');
+    expect(primes).toBeDefined();
+    const result = machine.assemble(primes!.source);
+    expect(result.errors).toHaveLength(0);
+    expect(result.startAddress).toBe(3000);
   });
 
   it('handles CHAR and NUM conversion', () => {
