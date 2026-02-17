@@ -149,3 +149,35 @@
 .app__modal-close:hover {
   background: #95a5a6;
 }
+
+/* ---- Mobile responsive layout ---- */
+@media (max-width: 768px) {
+  .app {
+    padding: 6px;
+  }
+
+  .app__header {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .app__header-text h1 {
+    font-size: 16px;
+  }
+
+  .app__header-text p {
+    font-size: 10px;
+  }
+
+  .app__main {
+    grid-template-columns: 1fr;
+  }
+
+  .app__left { order: 1; }
+  .app__center { order: 2; }
+  .app__right { order: 3; }
+
+  .app__footer {
+    font-size: 10px;
+  }
+}

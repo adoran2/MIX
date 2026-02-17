@@ -123,3 +123,14 @@
   color: #f44336;
   font-weight: bold;
 }
+
+@media (max-width: 768px) {
+  .control-console__buttons {
+    flex-wrap: wrap;
+  }
+
+  .control-console__btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

@@ -82,3 +82,15 @@
   color: #c62828;
   padding: 2px 0;
 }
+
+@media (max-width: 768px) {
+  .input-console__header {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .input-console__editor {
+    min-height: 140px;
+    font-size: 12px;
+  }
+}

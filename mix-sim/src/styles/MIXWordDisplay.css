@@ -76,3 +76,44 @@
   min-width: 60px;
   font-size: 10px;
 }
+
+@media (max-width: 768px) {
+  .mix-word__sign {
+    width: 16px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  .mix-word__byte {
+    width: 22px;
+    height: 20px;
+    font-size: 11px;
+  }
+
+  .mix-word__value {
+    min-width: 50px;
+    font-size: 10px;
+  }
+
+  .mix-word__label {
+    min-width: 22px;
+    font-size: 10px;
+  }
+
+  .mix-word--compact .mix-word__sign {
+    width: 14px;
+    height: 18px;
+    font-size: 11px;
+  }
+
+  .mix-word--compact .mix-word__byte {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  .mix-word--compact .mix-word__value {
+    min-width: 44px;
+    font-size: 9px;
+  }
+}
