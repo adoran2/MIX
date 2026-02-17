@@ -1,0 +1,15 @@
+# Java compiled bytecode
+*.class
+
+# macOS
+.DS_Store
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS-generated
+Thumbs.db
