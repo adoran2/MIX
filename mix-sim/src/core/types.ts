@@ -1,14 +1,16 @@
-export enum ComparisonState {
-  OFF = 0,
-  LESS = 1,
-  GREATER = 2,
-  EQUAL = 3,
-}
+export const ComparisonState = {
+  OFF: 0,
+  LESS: 1,
+  GREATER: 2,
+  EQUAL: 3,
+} as const;
+export type ComparisonState = (typeof ComparisonState)[keyof typeof ComparisonState];
 
-export enum Sign {
-  PLUS = '+',
-  MINUS = '-',
-}
+export const Sign = {
+  PLUS: '+',
+  MINUS: '-',
+} as const;
+export type Sign = (typeof Sign)[keyof typeof Sign];
 
 export const MIX_BYTE_MAX = 63;
 export const MIX_BYTE_MIN = 0;

@@ -239,7 +239,7 @@ export class MIXMachine {
       let address = 0;
       let index = 0;
       let field = instrDef.fValue;
-      let addrSign = Sign.PLUS;
+      let addrSign: Sign = Sign.PLUS;
 
       if (operand.length > 0) {
         let remaining = operand;

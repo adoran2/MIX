@@ -53,7 +53,6 @@ export function MemoryPanel({ memory, pc }: Props) {
           max={MEMORY_SIZE - VISIBLE_ROWS}
           value={scrollPos}
           onChange={handleScroll}
-          orient="vertical"
         />
       </div>
     </div>
