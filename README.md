@@ -50,7 +50,7 @@ MIX/
 
 ## Original project
 
-- **Author:** Andrew Doran ([andrew.doran.com](http://andrew.doran.com/))
+- **Author:** Andrew Doran ([andrewdoran.uk](http://andrewdoran.uk/))
 - **Version:** 0.11 (30 March 1999)
 - **Language:** Java (JDK 1.1 / AWT)
 - **Reference:** Donald E. Knuth, *The Art of Computer Programming*, Volume 1, Section 1.3
