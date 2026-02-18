@@ -184,6 +184,11 @@ function App() {
         <div className="app__modal-overlay" onClick={() => setShowInfo(false)}>
           <div className="app__modal" onClick={(e) => e.stopPropagation()}>
             <img src={`${base}MIXInfo.jpg`} alt="MIX 1009 Information" className="app__info-img" />
+            <p className="app__modal-link">
+              <a href={`${base}MIX_report.pdf`} target="_blank" rel="noopener noreferrer">
+                View Original Project Report (PDF)
+              </a>
+            </p>
             <button className="app__modal-close" onClick={() => setShowInfo(false)}>Close</button>
           </div>
         </div>
